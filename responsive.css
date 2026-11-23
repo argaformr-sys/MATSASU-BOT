@@ -1,0 +1,94 @@
+/* =========================================================
+   MATSASU BOT — Responsive Breakpoints (Android, iOS, Tablet, Desktop)
+   ========================================================= */
+
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .mobile-only {
+    display: inline-flex;
+  }
+
+  .sidebar {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    border-radius: 0 22px 22px 0;
+    transform: translateX(-105%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-wrapper {
+    margin-left: 0;
+    padding: 10px 12px 24px;
+  }
+
+  .top-header {
+    top: 8px;
+    border-radius: 18px;
+  }
+
+  .hero-banner {
+    min-height: 250px;
+    padding: 16px;
+  }
+
+  .hero-content {
+    align-self: center;
+    width: 100%;
+  }
+
+  .hero-bottom-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-badges-box {
+    justify-content: space-around;
+  }
+
+  .chat-turn {
+    max-width: 94%;
+  }
+
+  .ai-layout,
+  .global-chat-wrapper {
+    height: calc(100vh - 98px);
+  }
+}
+
+@media (max-width: 480px) {
+  .form-row,
+  .coin-methods-grid,
+  .profile-stats-row,
+  .status-showcase {
+    grid-template-columns: 1fr;
+  }
+
+  .search-box input {
+    width: 140px;
+  }
+
+  .ayah-arabic-text {
+    font-size: 24px;
+  }
+
+  .hero-title {
+    font-size: 1.65rem;
+  }
+}

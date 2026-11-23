@@ -1,0 +1,82 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function validRoleUnchanged() {
+      // Pengguna biasa tidak boleh mengubah field role istimewa (GOD, OWNER, RESELLER)
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role'])
+        || request.resource.data.role == resource.data.role;
+    }
+
+    function validCoinIncrement() {
+      // Maksimal kenaikan 1 coin per transaksi update & tidak boleh negatif
+      return request.resource.data.coins is int
+        && request.resource.data.coins >= resource.data.coins
+        && request.resource.data.coins <= resource.data.coins + 1;
+    }
+
+    function validPremiumActivation() {
+      // Premium hanya boleh diaktifkan jika coins >= 7 dan tidak bisa dicabut sembarangan
+      return request.resource.data.isPremium == resource.data.isPremium
+        || (request.resource.data.isPremium == true && resource.data.coins >= 7);
+    }
+
+    // Reservasi username unik
+    match /usernames/{usernameLower} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && request.resource.data.uid == request.auth.uid
+        && usernameLower.matches('^[a-z0-9_]{3,20}$');
+      allow delete: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow update: if false;
+    }
+
+    // Profil pengguna
+    match /users/{uid} {
+      allow read: if isSignedIn();
+      allow create: if isOwner(uid)
+        && request.resource.data.uid == uid
+        && request.resource.data.role == 'MEMBER'
+        && request.resource.data.coins == 0
+        && request.resource.data.isPremium == false
+        && !('password' in request.resource.data);
+      allow update: if isOwner(uid)
+        && request.resource.data.uid == uid
+        && !('password' in request.resource.data)
+        && validRoleUnchanged()
+        && validCoinIncrement()
+        && validPremiumActivation();
+      allow delete: if false;
+    }
+
+    // Global Chat lintas perangkat
+    match /chats/global/messages/{messageId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.text is string
+        && request.resource.data.text.size() >= 1
+        && request.resource.data.text.size() <= 500;
+      allow update, delete: if false;
+    }
+
+    // Riwayat percakapan AI pribadi per pengguna
+    match /ai_history/{uid}/conversations/{convId} {
+      allow read, create, delete: if isOwner(uid);
+      allow update: if false;
+    }
+
+    // Bookmark ayat Al-Qur'an pribadi per pengguna
+    match /bookmarks/{uid}/verses/{verseId} {
+      allow read, create, update, delete: if isOwner(uid);
+    }
+  }
+}

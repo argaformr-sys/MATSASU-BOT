@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#08070D" />
+  <title>MATSASU BOT — Intelligence Beyond Limits</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Global Loader Overlay -->
+  <div id="global-loader" class="global-loader hidden">
+    <div class="loader-card glass-panel">
+      <div class="spinner-ring"></div>
+      <p id="global-loader-text">Memuat sistem...</p>
+    </div>
+  </div>
+
+  <!-- AUTH VIEW -->
+  <section id="auth-view" class="auth-view">
+    <div class="auth-bg-layer"></div>
+    <div class="auth-overlay"></div>
+
+    <div class="auth-container">
+      <div class="brand-header">
+        <div class="logo-emblem">
+          <svg viewBox="0 0 64 64" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M12 24L22 14L32 22L42 14L52 24L47 46H17L12 24Z" stroke="#B45AFF" fill="rgba(139,66,199,0.18)"/>
+            <circle cx="32" cy="34" r="5" stroke="#FFFFFF"/>
+            <path d="M8 32H14M50 32H56M32 6V12" stroke="#B45AFF" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h1 class="brand-title">MATSASU BOT</h1>
+        <p class="brand-tagline">INTELLIGENCE BEYOND LIMITS</p>
+      </div>
+
+      <div class="auth-card glass-panel">
+        <div class="auth-tabs">
+          <button type="button" id="tab-login" class="auth-tab active">LOGIN</button>
+          <button type="button" id="tab-register" class="auth-tab">CREATE ACCOUNT</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form id="login-form" class="auth-form" novalidate>
+          <div class="form-group">
+            <label for="login-username">Username</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+              <input type="text" id="login-username" placeholder="Masukkan username" autocomplete="username" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <input type="password" id="login-password" placeholder="Minimal 8 karakter" autocomplete="current-password" required />
+              <button type="button" class="toggle-pass-btn" data-target="login-password" aria-label="Tampilkan password">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary btn-block">
+            <span>LOGIN</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </button>
+
+          <button type="button" id="switch-to-register" class="btn-secondary btn-block">
+            CREATE ACCOUNT
+          </button>
+        </form>
+
+        <!-- REGISTER FORM -->
+        <form id="register-form" class="auth-form hidden" novalidate>
+          <div class="form-group">
+            <label for="reg-username">Username</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+              <input type="text" id="reg-username" placeholder="Huruf, angka, underscore (3-20)" autocomplete="off" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-password">Password</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <input type="password" id="reg-password" placeholder="Minimal 8 karakter" autocomplete="new-password" required />
+              <button type="button" class="toggle-pass-btn" data-target="reg-password" aria-label="Tampilkan password">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="reg-gender">Jenis Kelamin</label>
+              <div class="input-wrapper">
+                <select id="reg-gender" required>
+                  <option value="">Pilih</option>
+                  <option value="Laki-laki">Laki-laki</option>
+                  <option value="Perempuan">Perempuan</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="reg-class">Kelas</label>
+              <div class="input-wrapper">
+                <input type="text" id="reg-class" placeholder="Contoh: XII IPA 1" required />
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary btn-block">
+            <span>CREATE ACCOUNT</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN APP SHELL -->
+  <div id="app-shell" class="app-shell hidden">
+    <!-- Sidebar Backdrop -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="sidebar glass-panel">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <svg viewBox="0 0 64 64" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.4">
+            <path d="M12 24L22 14L32 22L42 14L52 24L47 46H17L12 24Z" stroke="#B45AFF" fill="rgba(139,66,199,0.25)"/>
+            <circle cx="32" cy="34" r="5" stroke="#FFFFFF"/>
+          </svg>
+          <div>
+            <span class="sidebar-logo-text">MATSASU BOT</span>
+            <span class="sidebar-subtext">INTELLIGENCE BEYOND LIMITS</span>
+          </div>
+        </div>
+        <button type="button" id="close-sidebar-btn" class="icon-btn mobile-only" aria-label="Tutup menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="sidebar-user-mini">
+        <img id="sidebar-avatar" src="assets/images/Gambar4.png" alt="Avatar" class="avatar-sm" />
+        <div class="sidebar-user-info">
+          <div id="sidebar-username" class="sidebar-username">User</div>
+          <div id="sidebar-role-badge" class="role-badge standard">MEMBER</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Navigasi Utama">
+        <button type="button" class="nav-item active" data-page="home">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span>HOME</span>
+        </button>
+
+        <button type="button" class="nav-item" data-page="ai">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/>
+          </svg>
+          <span>AI ASSISTANT</span>
+        </button>
+
+        <button type="button" class="nav-item" data-page="quran">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+          <span>AL QURAN</span>
+        </button>
+
+        <button type="button" class="nav-item" data-page="chat">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span>GLOBAL CHAT</span>
+        </button>
+
+        <button type="button" class="nav-item" data-page="profile">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>EDIT PROFILE</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button type="button" id="sidebar-logout-btn" class="nav-item logout-item">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          <span>LOGOUT</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- CONTENT WRAPPER -->
+    <div class="main-wrapper">
+      <!-- TOP HEADER -->
+      <header class="top-header glass-panel">
+        <div class="header-left">
+          <button type="button" id="open-sidebar-btn" class="icon-btn" aria-label="Buka menu">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+          <h2 id="header-page-title" class="header-title">Home</h2>
+        </div>
+
+        <div class="header-right">
+          <button type="button" id="header-notif-btn" class="icon-btn notif-btn" aria-label="Notifikasi">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            <span id="notif-dot" class="notif-dot hidden"></span>
+          </button>
+
+          <button type="button" id="header-profile-btn" class="header-avatar-btn" aria-label="Profil Pengguna">
+            <img id="header-avatar" src="assets/images/Gambar4.png" alt="Profil" />
+            <span class="online-indicator"></span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Notification Popover -->
+      <div id="notif-popover" class="notif-popover glass-panel hidden">
+        <div class="notif-popover-header">
+          <span>Notifikasi Sistem</span>
+          <button type="button" id="clear-notif-btn" class="text-btn">Bersihkan</button>
+        </div>
+        <div id="notif-list" class="notif-list">
+          <div class="notif-empty">Belum ada notifikasi baru.</div>
+        </div>
+      </div>
+
+      <!-- MAIN PAGES -->
+      <main class="main-content">
+        <!-- PAGE 1: HOME -->
+        <section id="page-home" class="page-section active">
+          <!-- Hero Banner -->
+          <div class="hero-banner">
+            <img src="assets/images/Gambar1.png" alt="MATSASU Banner" class="hero-img" />
+            <div class="hero-overlay"></div>
+
+            <div class="hero-top-meta">
+              <span class="hero-tag">MATSASU BOT</span>
+              <span class="hero-status-pill">Always Here For You</span>
+            </div>
+
+            <div class="hero-content">
+              <div class="hero-crown">
+                <svg viewBox="0 0 64 64" width="34" height="34" fill="none" stroke="#B45AFF" stroke-width="2.4">
+                  <path d="M10 44L16 20L32 32L48 20L54 44H10Z" fill="rgba(180,90,255,0.2)"/>
+                  <line x1="10" y1="50" x2="54" y2="50"/>
+                </svg>
+              </div>
+              <h1 class="hero-title">MATSASU BOT</h1>
+              <p class="hero-subtitle">Your Intelligent AI Assistant.</p>
+              <div class="hero-pillars">
+                <span>SMART</span>
+                <span class="dot-sep"></span>
+                <span>FAST</span>
+                <span class="dot-sep"></span>
+                <span>MULTIFUNCTION</span>
+              </div>
+            </div>
+
+            <div class="hero-bottom-bar">
+              <div class="hero-welcome-chip glass-chip">
+                <img src="assets/images/Gambar7.png" alt="MATSASU Mascot" class="chibi-mini" />
+                <div>
+                  <span class="welcome-small">Welcome to</span>
+                  <strong id="hero-welcome-name">MATSASU BOT</strong>
+                </div>
+              </div>
+
+              <div class="hero-badges-box glass-chip">
+                <div class="mini-feat">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#B45AFF" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                  </svg>
+                  <span>Fast Response</span>
+                </div>
+                <div class="mini-feat">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#B45AFF" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                  <span>Safe &amp; Secure</span>
+                </div>
+                <div class="mini-feat">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#B45AFF" stroke-width="2">
+                    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                  </svg>
+                  <span>Full Feature</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile & Coin Grid -->
+          <div class="home-grid">
+            <!-- Profile Card -->
+            <div class="profile-summary-card glass-panel">
+              <div class="profile-card-top">
+                <div class="profile-avatar-wrap">
+                  <img id="home-profile-avatar" src="assets/images/Gambar4.png" alt="Default Profile" class="profile-avatar-lg" />
+                  <span class="status-dot-lg"></span>
+                </div>
+                <div class="profile-main-meta">
+                  <div class="profile-name-row">
+                    <h3 id="home-username">Pengguna</h3>
+                    <span id="home-premium-badge" class="status-pill standard">STANDARD</span>
+                  </div>
+                  <div class="profile-details-tags">
+                    <span id="home-class-tag" class="meta-tag">Kelas: -</span>
+                    <span id="home-gender-tag" class="meta-tag">Gender: -</span>
+                    <span class="meta-tag online-tag">Online</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="profile-stats-row">
+                <div class="stat-box">
+                  <span class="stat-label">Jumlah Coin</span>
+                  <strong id="home-coin-count" class="stat-value accent">0 COIN</strong>
+                </div>
+                <div class="stat-box">
+                  <span class="stat-label">Status Akun</span>
+                  <strong id="home-role-status" class="stat-value">MEMBER</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Coin Collection Card -->
+            <div class="coin-card glass-panel">
+              <div class="coin-card-header">
+                <div>
+                  <span class="section-eyebrow">COIN COLLECTION</span>
+                  <h3 id="coin-progress-title" class="coin-counter-heading">0 / 7 COIN</h3>
+                </div>
+                <div class="coin-icon-badge">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#B45AFF" stroke-width="2">
+                    <circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h6M9 14h6"/>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="progress-track">
+                <div id="coin-progress-bar" class="progress-fill" style="width: 0%;"></div>
+              </div>
+
+              <p id="coin-remaining-text" class="coin-subinfo">Kumpulkan 7 Coin lagi untuk membuka MATSASU PREMIUM.</p>
+
+              <div class="coin-methods-grid">
+                <div class="coin-method-item">
+                  <div class="method-head">
+                    <span>Login Harian</span>
+                    <strong id="daily-login-status" class="method-badge">Aktif</strong>
+                  </div>
+                  <p>+1 Coin otomatis setiap hari saat masuk.</p>
+                </div>
+
+                <div class="coin-method-item">
+                  <div class="method-head">
+                    <span>Aktivitas 2 Menit</span>
+                    <strong id="activity-timer-display" class="method-badge mono">02:00</strong>
+                  </div>
+                  <div class="mini-progress-track">
+                    <div id="activity-progress-bar" class="mini-progress-fill" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <button type="button" id="open-premium-modal-btn" class="btn-primary btn-block hidden">
+                ACTIVATE PREMIUM NOW
+              </button>
+            </div>
+          </div>
+
+          <!-- Core Features (Strictly 3 items) -->
+          <div class="section-block">
+            <div class="section-header-row">
+              <h3>Fitur Utama</h3>
+              <span class="section-hint">Pilih layanan utama MATSASU BOT</span>
+            </div>
+
+            <div class="features-grid">
+              <button type="button" class="feature-card glass-panel" data-nav="ai">
+                <div class="feature-icon-box">
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/>
+                  </svg>
+                </div>
+                <div class="feature-text">
+                  <h4>AI ASSISTANT</h4>
+                  <p>Asisten cerdas bertenaga Groq dengan 5 mode spesialis.</p>
+                </div>
+                <svg class="feature-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+
+              <button type="button" class="feature-card glass-panel" data-nav="quran">
+                <div class="feature-icon-box">
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                  </svg>
+                </div>
+                <div class="feature-text">
+                  <h4>AL QURAN</h4>
+                  <p>114 surah lengkap dengan teks Arab, terjemahan, dan bookmark.</p>
+                </div>
+                <svg class="feature-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+
+              <button type="button" class="feature-card glass-panel" data-nav="chat">
+                <div class="feature-icon-box">
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                  </svg>
+                </div>
+                <div class="feature-text">
+                  <h4>GLOBAL CHAT</h4>
+                  <p>Ruang diskusi real-time lintas perangkat untuk semua pengguna.</p>
+                </div>
+                <svg class="feature-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- PAGE 2: AI ASSISTANT -->
+        <section id="page-ai" class="page-section">
+          <div class="ai-layout">
+            <!-- AI Top Bar & Mode Selector -->
+            <div class="ai-topbar glass-panel">
+              <div class="ai-identity">
+                <img src="assets/images/Gambar3.png" alt="MATSASU AI" class="ai-mascot-avatar" />
+                <div>
+                  <div class="ai-title-row">
+                    <h3>MATSASU AI</h3>
+                    <span id="ai-active-mode-badge" class="mode-pill">CULTUR</span>
+                  </div>
+                  <p id="ai-mode-desc" class="ai-subtitle">Coding, Debugging &amp; Web Development</p>
+                </div>
+              </div>
+
+              <div class="ai-actions">
+                <button type="button" id="ai-history-toggle-btn" class="icon-btn" title="Riwayat Percakapan">
+                  <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                </button>
+                <button type="button" id="ai-new-chat-btn" class="icon-btn" title="Percakapan Baru">
+                  <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                  </svg>
+                </button>
+                <button type="button" id="ai-clear-chat-btn" class="icon-btn danger" title="Hapus Percakapan">
+                  <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- 5 AI Mode Selector Cards -->
+            <div id="ai-modes-bar" class="ai-modes-bar" role="tablist" aria-label="Pilih Mode AI">
+              <!-- Rendered dynamically by ai.js -->
+            </div>
+
+            <!-- AI History Drawer -->
+            <div id="ai-history-drawer" class="ai-history-drawer glass-panel hidden">
+              <div class="drawer-header">
+                <h4>Riwayat Percakapan</h4>
+                <button type="button" id="close-ai-history-btn" class="icon-btn">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                </button>
+              </div>
+              <div id="ai-history-list" class="ai-history-list">
+                <p class="empty-muted">Belum ada riwayat tersimpan.</p>
+              </div>
+            </div>
+
+            <!-- Chat Messages Stream -->
+            <div id="ai-messages-container" class="ai-messages-container glass-panel">
+              <!-- Welcome empty state rendered by JS -->
+            </div>
+
+            <!-- AI Thinking Indicator -->
+            <div id="ai-thinking-bar" class="ai-thinking-bar hidden">
+              <img src="assets/images/Gambar3.png" alt="AI Thinking" class="thinking-avatar" />
+              <div class="typing-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <span>MATSASU AI sedang berpikir...</span>
+            </div>
+
+            <!-- AI Input Area -->
+            <form id="ai-chat-form" class="ai-input-box glass-panel">
+              <textarea id="ai-prompt-input" rows="1" placeholder="Tulis pertanyaan atau kode untuk MATSASU AI..." required></textarea>
+              <button type="submit" id="ai-send-btn" class="btn-primary send-btn" aria-label="Kirim pesan">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- PAGE 3: AL QURAN -->
+        <section id="page-quran" class="page-section">
+          <div class="quran-wrapper">
+            <div class="quran-bg-layer"></div>
+            <div class="quran-overlay"></div>
+
+            <!-- Quran Controls Header -->
+            <div class="quran-header glass-panel">
+              <div class="quran-title-block">
+                <h3>Al-Qur'an Al-Karim</h3>
+                <p>114 Surah lengkap dengan terjemahan Bahasa Indonesia</p>
+              </div>
+
+              <div class="quran-controls">
+                <div class="search-box">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  </svg>
+                  <input type="text" id="quran-search-input" placeholder="Cari surah (nama / nomor)..." />
+                </div>
+
+                <div class="quran-tools-row">
+                  <button type="button" id="quran-bookmarks-btn" class="btn-secondary btn-sm">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    <span>Bookmark</span>
+                  </button>
+
+                  <div class="font-size-controls" title="Ukuran Teks Arab">
+                    <button type="button" id="arabic-font-dec" class="icon-btn-sm">A-</button>
+                    <span id="arabic-font-label">28px</span>
+                    <button type="button" id="arabic-font-inc" class="icon-btn-sm">A+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Surah List View -->
+            <div id="quran-surah-list-view" class="quran-surah-grid">
+              <!-- Populated by quran.js -->
+            </div>
+
+            <!-- Bookmarks View -->
+            <div id="quran-bookmarks-view" class="quran-reader-container glass-panel hidden">
+              <div class="reader-topbar">
+                <button type="button" id="close-bookmarks-btn" class="btn-secondary btn-sm">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+                  </svg>
+                  <span>Kembali ke Daftar Surah</span>
+                </button>
+                <h4>Ayat Tersimpan (Bookmark)</h4>
+              </div>
+              <div id="quran-bookmarks-list" class="ayah-list"></div>
+            </div>
+
+            <!-- Surah Reader View -->
+            <div id="quran-reader-view" class="quran-reader-container glass-panel hidden">
+              <div class="reader-topbar">
+                <button type="button" id="quran-back-btn" class="btn-secondary btn-sm">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+                  </svg>
+                  <span>Daftar Surah</span>
+                </button>
+
+                <div class="reader-surah-meta">
+                  <h4 id="reader-surah-title">Al-Fatihah</h4>
+                  <span id="reader-surah-subtitle">Pembukaan • 7 Ayat</span>
+                </div>
+
+                <div class="reader-ayah-jump">
+                  <select id="ayah-jump-select" aria-label="Lompat ke ayat">
+                    <option value="">Ayat...</option>
+                  </select>
+                </div>
+              </div>
+
+              <div id="bismillah-banner" class="bismillah-banner">
+                بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+              </div>
+
+              <div id="quran-ayah-list" class="ayah-list">
+                <!-- Verses rendered here -->
+              </div>
+
+              <div class="reader-bottom-nav">
+                <button type="button" id="prev-surah-btn" class="btn-secondary">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"/>
+                  </svg>
+                  <span>Surah Sebelumnya</span>
+                </button>
+                <button type="button" id="next-surah-btn" class="btn-primary">
+                  <span>Surah Berikutnya</span>
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PAGE 4: GLOBAL CHAT -->
+        <section id="page-chat" class="page-section">
+          <div class="global-chat-wrapper">
+            <div class="global-chat-bg"></div>
+            <div class="global-chat-overlay"></div>
+
+            <div class="chat-room-header glass-panel">
+              <div>
+                <h3>GLOBAL CHAT</h3>
+                <p>Komunitas Real-Time MATSASU BOT</p>
+              </div>
+              <div class="online-pill">
+                <span class="pulse-dot"></span>
+                <span>Live Sync</span>
+              </div>
+            </div>
+
+            <div id="global-chat-messages" class="global-chat-messages glass-panel">
+              <!-- Real-time Firestore messages -->
+            </div>
+
+            <form id="global-chat-form" class="global-chat-input-bar glass-panel">
+              <input type="text" id="global-chat-input" maxlength="500" placeholder="Kirim pesan ke semua pengguna (maks 500 karakter)..." autocomplete="off" required />
+              <button type="submit" id="global-chat-send-btn" class="btn-primary send-btn" aria-label="Kirim pesan global">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- PAGE 5: EDIT PROFILE -->
+        <section id="page-profile" class="page-section">
+          <div class="profile-edit-layout">
+            <div class="glass-panel profile-edit-card">
+              <div class="profile-edit-header">
+                <h3>Edit Profil Pengguna</h3>
+                <p>Kelola identitas, foto profil, dan status akun MATSASU BOT</p>
+              </div>
+
+              <form id="edit-profile-form" class="profile-form" novalidate>
+                <div class="avatar-upload-section">
+                  <div class="avatar-preview-wrap">
+                    <img id="edit-avatar-preview" src="assets/images/Gambar4.png" alt="Preview Profil" />
+                    <label for="profile-photo-input" class="avatar-edit-badge" title="Unggah Foto Profil">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
+                      </svg>
+                    </label>
+                    <input type="file" id="profile-photo-input" accept="image/png, image/jpeg, image/webp" class="hidden" />
+                  </div>
+                  <div class="avatar-upload-info">
+                    <strong id="edit-display-name">Username</strong>
+                    <span>Format JPG, PNG, WEBP. Maksimal 2MB.</span>
+                  </div>
+                </div>
+
+                <div class="status-showcase">
+                  <div class="status-item">
+                    <span>Status Langganan</span>
+                    <strong id="edit-premium-status" class="status-pill standard">STANDARD</strong>
+                  </div>
+                  <div class="status-item">
+                    <span>Role Akun</span>
+                    <strong id="edit-role-status" class="role-badge standard">MEMBER</strong>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="edit-username">Username</label>
+                  <div class="input-wrapper">
+                    <input type="text" id="edit-username" required />
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="edit-gender">Jenis Kelamin</label>
+                    <div class="input-wrapper">
+                      <select id="edit-gender" required>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="edit-class">Kelas</label>
+                    <div class="input-wrapper">
+                      <input type="text" id="edit-class" required />
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" id="save-profile-btn" class="btn-primary btn-block">
+                  <span>SIMPAN PERUBAHAN</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- PREMIUM UNLOCKED MODAL -->
+  <div id="premium-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-card glass-panel">
+      <div class="modal-mascot-wrap">
+        <img src="assets/images/Gambar7.png" alt="MATSASU Mascot" class="modal-chibi" />
+      </div>
+      <span class="modal-eyebrow">7 / 7 COIN TERKUMPUL</span>
+      <h2 class="modal-title">PREMIUM UNLOCKED</h2>
+      <p class="modal-subtitle">Congratulations!<br />You have unlocked MATSASU PREMIUM.</p>
+      <ul class="modal-perks">
+        <li>Akses penuh mode HARIRI — Deep Analytical AI</li>
+        <li>Akses penuh mode SONNET — Game &amp; App Architect</li>
+        <li>Badge eksklusif MATSASU PREMIUM pada profil</li>
+      </ul>
+      <div class="modal-actions">
+        <button type="button" id="activate-premium-btn" class="btn-primary btn-block">
+          ACTIVATE PREMIUM
+        </button>
+        <button type="button" id="close-premium-modal-btn" class="btn-secondary btn-block">
+          Nanti Saja
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Third-party safe libraries: Marked & DOMPurify & Highlight.js -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+  <!-- Main App Entry Module -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
